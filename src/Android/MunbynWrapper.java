@@ -76,7 +76,7 @@ public class MunbynWrapper extends CordovaPlugin {
             listBT(callbackContext);
             return true;
         } 
-        else if (action.equals("align") {
+        else if (action.equals("align")) {
             String name = args.getString(0);
             String align = args.getString(1);
             if (findBT(callbackContext, name)) {
