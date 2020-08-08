@@ -75,6 +75,46 @@ public class MunbynWrapper extends CordovaPlugin {
         else if (action.equals("list")) {
             listBT(callbackContext);
             return true;
+        } 
+        else if (action.equals("align") {
+            String align = args.getString(0);
+            if (findBT(callbackContext, name)) {
+                try {
+                    Context context = this.cordova.getActivity().getApplicationContext();
+                    BluetoothService btService = new BluetoothService(context, new Handler());
+                    btService.start();
+                    try {
+                        btService.connect(mmDevice);
+                        long t= System.currentTimeMillis();
+                        long end = t+5000;
+                        while(btService.mConnectedThread == null && System.currentTimeMillis() < end)
+                        {
+
+                        }
+                        if(btService.mConnectedThread == null)
+                        {
+                            callbackContext.error("Failed to connect to Bluetooth device.");
+                            throw new JSONException("Failed to connect to Bluetooth device.");
+                        }
+                        int alignment = Integer.parseInt(align);
+                        byte[] sendCommand = PrinterCommand.POS_S_Align(alignment);
+                        btService.write(sendCommand);
+                        btService.stop();
+                        callbackContext.success("Align");
+                        return true;
+                    } catch (Exception e) {
+                        callbackContext.error("Bluetooth connection error");
+                    }
+                    callbackContext.success("connected");
+
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, e.getMessage());
+                    e.printStackTrace();
+                }
+            } else {
+                callbackContext.error("Bluetooth Device Not Found: " + name);
+            }
+            return true;
         }
       return true;
     }
