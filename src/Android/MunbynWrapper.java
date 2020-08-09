@@ -42,7 +42,7 @@ public class MunbynWrapper extends CordovaPlugin {
                     try {
                         btService.connect(mmDevice);
                         long t= System.currentTimeMillis();
-                        long end = t+5000;
+                        long end = t+15000;
                         while(btService.mConnectedThread == null && System.currentTimeMillis() < end)
                         {
 
